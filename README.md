@@ -97,3 +97,9 @@ This is the main entry point of our application NestJS Application.
 It's where the application starts running.
 
 The main.ts file contains the logic to create and start the NestJS application. The NestJS framework uses the NestFactory to create an instance of the application. This instance will use all the modules, controllers, and services you've set up in your project.
+
+***@Module()***
+In Nest JS Module is a class annotated with @Module decorator.
+This decorator is used to define a module in NestJS. It's a class that imports other modules 
+and provides the necessary methods to configure the NestJS application.
+It acts as a container for a closely related set of functionality, encapsulating providers (services), controllers, and other modules that work together to perform specific tasks.
