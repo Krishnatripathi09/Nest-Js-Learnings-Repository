@@ -1,3 +1,21 @@
+
+# Nest-Js 
+NestJS is a robust and scalable framework built on top of Node.js. It leverages TypeScript to develop efficient, maintainable, and modular server-side applications, making it ideal for building modern, enterprise-grade applications.
+### Features of NestJS
+Nest js uses TypeScript to build the apps and EOD this Typescript code is converted to JS which is then run by our Node engine.
+
+-   **Modular Design**: NestJS follows a modular design, allowing developers to create separate modules.It's codebase is oraganized around modules. It promotes clear separation of concern by dividing our app code into modules,services controllers and providers. This enhances code Readability, Maintainability and Testability
+
+-   **Dependency Injection**: NestJS uses dependency injection to manage dependencies between modules.
+
+-   **Flexibility** : It is highly adaptable allowing us to choose between express or fastify as the underlying HTTP server. It seamlessly integrates with nodejs libraries and frameworks.
+
+-   **Type Safety**: NestJS is built on top of TypeScript, which provides type safety.
+
+-   **Microservices** : The modular Architecture and dependency injection makes Nest-js Suitable for microservices architecture.
+
+
+
 ## Files Generated When we run the Command nest new project-name and their Uses
 When we run the command nest new project-name, NestJS generates several files and directories in our project
 
