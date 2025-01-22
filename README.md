@@ -1,6 +1,7 @@
 
 # Nest-Js 
 NestJS is a robust and scalable framework built on top of Node.js. It leverages TypeScript to develop efficient, maintainable, and modular server-side applications, making it ideal for building modern, enterprise-grade applications.
+
 ### Features of NestJS
 Nest js uses TypeScript to build the apps and EOD this Typescript code is converted to JS which is then run by our Node engine.
 
@@ -13,6 +14,16 @@ Nest js uses TypeScript to build the apps and EOD this Typescript code is conver
 -   **Type Safety**: NestJS is built on top of TypeScript, which provides type safety.
 
 -   **Microservices** : The modular Architecture and dependency injection makes Nest-js Suitable for microservices architecture.
+
+## Command to Create a New Nest-JS Project 
+nest new (Project-name )
+- we can run the command nest --help to see a list of all the commands that we can use to create
+  our project or project files
+
+In Package.json we have various scripts to start our project for Eg:
+- "start": "nest start",
+- "start:dev": "nest start --watch", so if we start our application using just start then it will start
+  and will not watch for any Changes but if we start it using start:dev it will start the appication in wacth mode  and will compile application instantly for any changes.
 
 
 
