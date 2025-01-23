@@ -121,14 +121,150 @@ service file.
 
 Without a service, the controller would have to handle both HTTP request logic and business logic, making it cluttered and harder to maintain.
 
+***entity***
+It defines the structure of database entities.Used when interacting with databases like TypeOrm.
+
+***Test File***
+It Contains the unit Test for the controller to ensure its functionality. 
+
 **__main.ts__**
 This is the main entry point of our application NestJS Application.
 It's where the application starts running.
 
 The main.ts file contains the logic to create and start the NestJS application. The NestJS framework uses the NestFactory to create an instance of the application. This instance will use all the modules, controllers, and services you've set up in your project.
 
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+
+NestFactory.create(AppModule) creates an instance of your NestJS application, using the root module (AppModule) as the starting point.
+NestFactory is a helper class provided by NestJS to initialize the application.
+AppModule is the main module where all your application components, controllers, and providers are imported and registered.
+
+
 ***@Module()***
 In Nest JS Module is a class annotated with @Module decorator.
 This decorator is used to define a module in NestJS. It's a class that imports other modules 
 and provides the necessary methods to configure the NestJS application.
-It acts as a container for a closely related set of functionality, encapsulating providers (services), controllers, and other modules that work together to perform specific tasks.
+It acts as a container for a closely related set of functionality, encapsulating providers (services, controllers), and other modules that work together to perform specific tasks.
+Providers: Providers can be services,controllers or other classes taht are managed by the module.
+
+When we create a new module class it must be imported in root module(app module) of our Nest JS application so our root module is aware of this new module file.
+
+## Creating a Module 
+We can create a module manually for eg: if we want to create a users module then inside the src folder we can 
+create a new folder named users and inside that folder we can create a new file named users.module.ts and then we can write the logic to export the module 
+" for eg: 
+import { Module } from "@nestjs/common"
+
+@Module({
+    imports:[]
+})
+export class UserModule{}" 
+
+Here we are exporting a UserModule and then we can import this module inside our root module that is app module
+to use it in our app.
+- We can also created a module using cli by running the command nest g(generate) module "module name"
+-----> __nest g module users__ (this will directly create a module users)
+
+## REST API
+A REST API (Representational State Transfer Application Programming Interface) is a set of rules and conventions for building web services. It uses HTTP methods (like GET, POST, PUT, DELETE) to enable communication between a client (like a web browser or mobile app) and a server.
+
+***Why is it called REST API?***
+The term "REST" comes from Representational State Transfer, which is a set of architectural principles defined by Roy Fielding in his doctoral dissertation in 2000. REST APIs are called so because they adhere to these principles to ensure scalability, performance, and ease of maintenance.
+
+__Other Types of APIs (Apart from REST):__
+***SOAP (Simple Object Access Protocol)***: A protocol for exchanging structured information in web services using XML.
+***GraphQL***: A query language for APIs that allows clients to request exactly the data they need.
+***RPC (Remote Procedure Call)***: A protocol where a client executes a function or procedure on a remote server.
+
+- An API is called Rest API when it follows below six (1 Optional) design principles
+- Client-Server Architecture
+- Stateless
+- Cacheable
+- Layered System
+- Uniform InterFace
+- Code On Demand (Optional) 
+
+- ___Client-Server Architecture__
+Definition: The client and server are independent of each other. The client handles the user interface and user interactions, while the server manages the backend logic, data, and storage.
+Why It Matters: This separation allows each part to evolve independently without affecting the other, leading to better scalability and maintainability.
+Example:
+
+Imagine a weather app on your phone (the client). It requests the current weather data from a server. The server processes the request and sends back the weather data, which the app then displays.
+The client doesn’t need to know how the server gets the weather data, and the server doesn’t care how the client displays it..
+  
+___Stateless__
+Definition: Each request from a client to the server must contain all the information needed to understand and process the request. The server does not store any client-specific information between requests (i.e., no session state is maintained on the server).
+
+Why It Matters:
+This simplifies the server design and improves scalability.
+Since the server doesn’t rely on any stored state, it can handle requests independently, making it easier to distribute the load across multiple servers.
+
+Example:
+
+Imagine you’re ordering food online. Each time you interact with the app (e.g., searching for items, adding items to your cart), the server doesn’t "remember" you between actions.
+Instead, the app (client) sends all necessary information (like your user ID, cart contents, etc.) with every request to the server.
+If the app wants to "remember" something (like your cart), it uses client-side storage (e.g., cookies or local storage).
+
+- ___Cacheable__
+Definition: Responses from the server should indicate whether they can be cached by the client or any intermediate components (like proxies). Caching allows clients to reuse prior responses for future requests, reducing the need to repeatedly contact the server.
+
+Why It Matters:
+Improves performance by reducing server load and latency.
+Ensures faster responses for clients.
+
+Example:
+Imagine a news website. When you open the homepage, the server sends the list of articles. The response includes cache-related headers, like Cache-Control: max-age=3600, which tells the browser it can store this data for an hour.
+If you revisit the homepage within that hour, your browser will display the cached content instead of making a new request to the server.
+
+- ___Layered System__
+Definition: A REST API should be designed so that it can work through multiple layers, such as load balancers, caching servers, proxies, and application servers, without the client needing to know the exact architecture.
+
+Why It Matters:
+Improves scalability by allowing load balancing and caching at intermediate layers.
+Enhances security by restricting direct access to the server (e.g., through firewalls or proxies).
+Example:
+
+When you visit an e-commerce site, your request might go through:
+A CDN (Content Delivery Network) to serve static assets (e.g., images, stylesheets).
+A load balancer to distribute traffic across multiple servers.
+The backend server, which processes your request and fetches data from the database.
+The client only interacts with a single endpoint (e.g., https://api.example.com), unaware of these intermediate layers.
+
+
+- ___Uniform Interface__
+Definition: A REST API should have a standardized way for clients to interact with it, ensuring consistency and predictability. This is achieved through four key constraints:
+
+Resource Identification: Each resource is identified by a unique URI (e.g., /users/123 for user ID 123).
+Resource Manipulation via Representations: Clients interact with resources using their representations (e.g., JSON, XML) and standard HTTP methods (GET, POST, PUT, DELETE).
+Self-Descriptive Messages: Each request and response contains all the information needed to understand it (e.g., HTTP status codes, headers, and body).
+Hypermedia as the Engine of Application State (HATEOAS): Responses may include links to related resources, helping clients navigate the API dynamically.
+Why It Matters:
+
+Simplifies API usage by adhering to predictable standards.
+Reduces client-server coupling, as clients don’t need to know implementation details.
+Example:
+
+For a blog API:
+GET /posts: Fetches all blog posts.
+GET /posts/1: Fetches the blog post with ID 1.
+POST /posts: Creates a new blog post.
+DELETE /posts/1: Deletes the blog post with ID 1.
+The client can understand the API structure based on these consistent rules.
+
+
+___Code on Demand (Optional)__
+Definition: A server can temporarily extend a client’s functionality by transferring executable code (like JavaScript) to the client, which the client can then execute.
+Why It Matters:
+Adds flexibility by enabling dynamic features without requiring client-side updates.
+Useful for delivering complex functionalities, like form validations or interactive UI components.
+Example:
+
+Imagine an e-commerce website where the server sends JavaScript code to dynamically validate a credit card form. The browser (client) runs this code to ensure the entered card details meet certain criteria before submitting them to the server.
+
+This principle is optional in REST APIs. Many APIs do not use it, as it introduces additional complexity and security concerns.
+
