@@ -97,6 +97,10 @@ __tsconfig.build.json__: Production-specific configuration for the build process
 
 ***app.contoller.ts***
 In NestJS, we define the behavior for each HTTP method (GET, POST, PUT, PATCH, DELETE) inside our controller. The controller listens for specific requests to a route, processes them, and returns a response.
+They act as a bridge between the client and the internal logic of out Nest Js Application.
+
+For Eg: when we send a GET request http://localhost:3000/user to this URL then controller will have 
+a GET method defined to listen GET requests at this URL and will return the Appropriate response accordingly 
 
 
 ***app.module.ts***
@@ -268,3 +272,72 @@ Imagine an e-commerce website where the server sends JavaScript code to dynamica
 
 This principle is optional in REST APIs. Many APIs do not use it, as it introduces additional complexity and security concerns.
 
+
+
+***Controller***
+When we create any controller file for any module like users or Auth we decorate it with 
+@Controllers() decorator and then inside the decorartor we pass the path which will call this controller
+for eg: 
+@Controller('users')
+export class UsersController{}
+
+Inside the controller we have passed 'users' which means when sometries to hit the 'Base_Url/users' he will
+directed to this controller 
+
+To create the Controller file we can run the command nest g controller (file name) users
+after creating the controller we have to import to it in our user module as we have created it for users
+so we can import it like  :
+@Module({
+    controllers: [UsersController],
+    imports:[]
+})
+here we have defined controllers and then imported the [UserController] inside it.
+When we create a controller with command __nest g controller auth__ we don't have to manually import it.It will 
+automatically get imported in our module.
+
+***Routing Decorators***
+When we create a module and controller for users for eg:
+@Controller('users')
+
+export class UsersController{
+ getUsers(){
+    return "You made a Get Request "
+ }
+
+} 
+Here we have a controlller for our users module but Nest JS will not know that this controller should handle
+all the  requests coming to this route "https://localhost:3000/users" 
+So we have to use the routing decorators to tell nest js that this controller should handle all the requests 
+coming to this route.
+
+__Routing Decorators__ :-
+A decorator in NestJS is a special type of function that can be attached to a class, method, property, or parameter to modify or enhance its behavior
+
+- Routing decorators in Nest Js are used to define routes that our application will
+respond to. They provide a declrative way to map HTTP methods(GET,PUT,POST,PATCH,DELETE) to specify controller methods.
+so to make getUSers method to handle GET requests we have to decorate it with @Get() decorator.
+for Eg:
+
+@Controller('users')
+
+export class UsersController{
+  __@Get()__  /*decorated it with get decorator*/
+ getUsers(){
+    return "You made a Get Request "
+ }
+
+} 
+
+Similarly to create an User in Our System we need to make Post Request to our backend system."https://localhost:3000/users" 
+
+@Controller('users')
+export class UsersController{
+ __@Post()__
+ createUser(){
+    return "You made a Post Request to /users"
+ }
+}
+
+## Services 
+Srevices in Nest Js are classes that encapsulate the business logic of our application.
+They are responsible for performing tasks such as data access calculations & Other core functionalities.
