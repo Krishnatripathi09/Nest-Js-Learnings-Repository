@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Param,Post } from "@nestjs/common";
+import { Controller,Get,Param,Post, Query } from "@nestjs/common";
 import { UsersService } from "./users.service";
 
 /* eslint-disable prettier/prettier */
@@ -7,8 +7,12 @@ import { UsersService } from "./users.service";
 
 export class UsersController{
     @Get()
- getUsers(){
+ getUsers(@Query() query:any){
     const usersService = new UsersService()
+    if(query.gender){
+        return usersService.getAllUsers().filter(u=>u.gender===query.gender)
+    }
+    
   return  usersService.getAllUsers();
  }
 

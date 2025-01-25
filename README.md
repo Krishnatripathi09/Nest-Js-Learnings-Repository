@@ -392,4 +392,53 @@ Now In order to use our parameter inside our request we have to use param decora
  So here we are just Reading the value of just one parameter even if we have passed multiple parameters.
  But if we want to read the value of all parameters then we don't need to assign any value to param decorators.
 
- __NOTE__ All Our Optional Parameters will come in the End 
+ __NOTE__ All Our Optional Parameters will come in the End **
+
+ @Get(':id')
+ getUsersById(@Param('id') id:any){
+    const usersService = new UsersService()
+   return usersService.getUserById(+id)
+ }
+
+ here we are getting our user by Id by specifying our user in Param decorator but as we are getting the value in string we are converting it to integer using + (Unary operator ) which converts the string to a number if string input is a valid number.
+
+ ## Query Strings
+Query Strings are the additional information appended to the end of the URL, separated from the URL by a question mark(?). The query String consist of key-value pair, where each key is followed by an equal sign and its corresponding Value;
+- for eg: GET https://localhost:3000/users?gender=male&isMarried=false
+So In the above URL we have our Base Url which is **https://localhost:3000/users** and then we have some query strings which are separated from the URL using a question mark (?) now after that we have our query string name 
+in key value format **gender=name** which is then separated by another key value pair **isMarried=false** by an & Sign. Here  __gender__  and  __isMarried__ are query strings with value __male__ and __false__ respectively.
+
+To read the query Strings in our logic we can specify our query string with @Query() decorator 
+and then pass the string:
+   @Get()
+ getUsers(@Query() query:any){
+    console.log(query)
+    const usersService = new UsersService()
+  return  usersService.getAllUsers();
+ }
+
+ Query String is not the part of route but if we want we can specify it in our routes. We can also read a single 
+ Query strings if we need by specifying the name of that query string inside our @Query decorator as an argument.
+    
+    @Get()
+ getUsers(@Query('gender') query:any){
+    console.log(query)
+    const usersService = new UsersService()
+  return  usersService.getAllUsers();
+ }
+ so here we have just specifed the value for gender query string inside the query decorator so the value of only 
+ that string will be read. Here value of gender is male so only male is read in console.
+ If we want to read the value of all the Query Strings then we do not need to specify any value inside the @Query
+ decorator.
+
+ we can also access the value of any specified query string using (.) Notation.
+For eg: when we are not passing any query string as parameter then we can acces it usinf query.gender
+  @Get()
+ getUsers(@Query() query:any){
+    console.log(query.gender)
+    const usersService = new UsersService()
+  return  usersService.getAllUsers();
+ }
+
+So in above case if we want to access the value of any specific query parameter then we can read it using (.)
+notation (query.gender) as here we are reading the value of gender.
