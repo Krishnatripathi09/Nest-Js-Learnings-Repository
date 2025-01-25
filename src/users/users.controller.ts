@@ -26,8 +26,8 @@ constructor(){
 
 
  @Post()
- createUser(@Body(new ValidationPipe()) user:CreateUserDto){
-    
+ createUser(@Body() user:CreateUserDto){
+    console.log( user instanceof CreateUserDto)
     //this.usersService.createUser(user);
     return 'A new User with id '+user.id+' is  Created :)'
  }

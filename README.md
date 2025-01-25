@@ -490,7 +490,7 @@ So this will convert our id from string to number.
 
  ## DTO 
 DTO known as data transfer object is a simple class that is used to represent data that is being transferred 
-between different layers of an application suych as the controllers service and repository.
+between different layers of an application suych as the controllers, service and repository.
 
 so to create a dto for our user we need to create a files create-user.dto.ts
 and inside that we define out DTO class and we are using a npm package to validate the data that we are going to receive for this class and we can specify the type of data using the class validator 
@@ -526,3 +526,53 @@ thenw we can import and specify the createUserDto() in our controller and we can
     //this.usersService.createUser(user);
    ( return 'A new User has been Created :)'
  }
+
+We can also create a Validation Pipe globally by passing it in our main.ts file 
+and then we do not need to specify the validation pipe in every http method where we need it.
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe())
+  await app.listen(3000);
+}
+When we specify a validation pipe in our main.ts file then this validation pipe is applied globally means that it will applied to each incoming request.
+
+For the validation pipes we can specify the configuration options to avoid sending the malicious data into our Database. 
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist:true,
+  }))
+  await app.listen(3000);
+}
+bootstrap();
+
+Now here we have set our whitelist to true in our validation pipe so the validation pipe will not accept any extra data which  except from which is set in Our DTO. Even if we try to send extra data the validation pipe will filter that extra data.
+
+We can also sepcify the __forbidNonWhitelisted__ to true so that it will throw an error when someone tries to send extra property into our DB
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist:true,
+    forbidNonWhitelisted:true
+  }))
+  await app.listen(3000);
+}
+bootstrap();
+
+Our user is initially not an instance of createUserDto so set our user as instance of createUserDto we 
+can set one more property __transform__ in our validation pipe to set our user as an instance of createUserDto.
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist:true,
+    forbidNonWhitelisted:true,
+    transform:true
+  }))
+  await app.listen(3000);
+}
+bootstrap();
+
+so using this the request data is being validated and also being transformed instance of createUserDto()
