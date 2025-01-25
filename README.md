@@ -442,3 +442,48 @@ For eg: when we are not passing any query string as parameter then we can acces 
 
 So in above case if we want to access the value of any specific query parameter then we can read it using (.)
 notation (query.gender) as here we are reading the value of gender.
+
+## Pipes :-
+Pipes in Nest-js are functions that transforms or validate data before it reaches a controller method.
+Pipes are used to clean,sanitize or convert data to specific format ensuring that the data received by the controller is in a suitable state for further processing.
+
+Pipes are Used for:
+- Data Validation - Data type,Length or Format
+- Data Transformation - Can transform data into into a different format or structure. for eg: To parse Json strings,convert data types, or format Dates
+- Data Sanitization - Pipes can sanitize data to remove potentially harmful content
+
+***An ES2016 decorator is an expression which returns a function and can take a target, name and property descriptor as arguments. You apply it by prefixing the decorator with an @ character and placing this at the very top of what you are trying to decorate. Decorators can be defined for either a class, a method or a property.***
+
+In our getUserById method in controller we are passing our id as as param and then using the unary (+) operator 
+to convert the received id which is in string to number we can use built in Pipe __ParseIntPipe__
+So this will convert our id from string to number.
+
+ @Get(':id')
+ getUsersById(@Param('id') id:any){
+    const usersService = new UsersService()
+   return usersService.getUserById(+id)
+ }
+
+ So here we can import the __ParseIntPipe__ and use it directly in our @Param decorator as second argument
+ directly 
+ For eg:-
+  @Get(':id')
+ getUsersById(@Param('id',__parseIntPipe__) id:any){
+    const usersService = new UsersService()
+   return usersService.getUserById(id)
+ }
+
+ Now as we have used our pipe after our id which is coming as string so the pipe will convert our string value
+ to Integer an we no more need to use (+) unary operator to convert string values to integers.
+
+ So before the request reaches the controller it will pass through the pipe and string value of id will be converted to Integer then we will read the id as a number
+
+ To set a default value for Query Strings when a user has not specified limit or page we can use __DefaultValuePipe__
+" @Get()
+ getUsers(@Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit:number, 
+ @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number){
+
+    console.log(limit,page)
+  return  this.usersService.getAllUsers();
+ }" 
+ Here we have set the limit 10 and 1 on query string when someone tries to get users but has not specified any limit or page

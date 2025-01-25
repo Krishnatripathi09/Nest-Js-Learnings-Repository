@@ -3,7 +3,6 @@ export class UsersService{
      users: {id:number,name:string,age:number,gender:string, isMarried:boolean}[]=[
         {id:1,name:'john', age:28, gender: 'male' ,isMarried:false},
         {id:2,name:'Mark', age:28, gender: 'fe-male' ,isMarried:false},
-        //{id:2,name:'Mark', age:28, gender: 'fe-male' ,isMarried:false}
     ]
 
 getAllUsers(){
