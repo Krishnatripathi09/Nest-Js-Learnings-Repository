@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Post } from "@nestjs/common";
+import { Controller,Get,Param,Post } from "@nestjs/common";
 import { UsersService } from "./users.service";
 
 /* eslint-disable prettier/prettier */
@@ -10,6 +10,12 @@ export class UsersController{
  getUsers(){
     const usersService = new UsersService()
   return  usersService.getAllUsers();
+ }
+
+ @Get(':id')
+ getUsersById(@Param('id') id:any){
+    const usersService = new UsersService()
+   return usersService.getUserById(+id)
  }
 
 

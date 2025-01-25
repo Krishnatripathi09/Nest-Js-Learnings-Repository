@@ -341,3 +341,55 @@ export class UsersController{
 ## Services 
 Srevices in Nest Js are classes that encapsulate the business logic of our application.
 They are responsible for performing tasks such as data access calculations & Other core functionalities.
+
+## Route Parameters
+Route parameters are placeholders within a route that allow us to capture dynamic parts of the URL.They provide 
+flexibilty and enable your application to handle different data based on the specific values provided in URL.
+for eg:
+To get all users in our system we will have a GET method for all the users
+Get All Users : GET https://localhost:3000/users
+to Get single user from The DB we will have route : GET https://localhost:3000/users/101
+so here the value 101 is for a specific user and its dynamic that is it's value will change and will be different for different users: 
+- So this change can be achieved dynamically using Route Parameters:
+- So like this we have multiple route Params in  a URL 
+For Eg: GET https://localhost:3000/users/male/london
+so here the male/london can change for different users from different cities like we are fetching a user from Pune who is female etc.
+
+So here we will create a route in our APP where we will access a user by his Id
+ @Get()
+ getUsersById(){
+
+ }
+
+ so to achieve this we specify a route parameter in our Get method 
+ @Get(':id')
+
+ so whenever a GET request will be made to "https://localhost:3000/users/101" URL the /101 will be match the GET method specified in Our Example.
+
+ We can also specify multiplle Route Parameters in Our Get Method 
+ For eg:
+ @Get(':id/:name/') so after every slash(/) we can add a colon and the name of the route Parameter.
+
+We can also make a Route Parameter Optional by adding a question Mark after the Route Parameter Name
+for eg:
+
+ @Get(':id/:name/:gender?')  here we have made our gender Parameter optional so one may or may not specify the
+ gender in our Route.
+
+Now In order to use our parameter inside our request we have to use param decorator and the value of users will assigned to our route Parameters
+ @Get(':id/:name/:gender')
+ getUsersById(@Param() param:any){
+
+ }
+
+ When we want to read the Value of Just One parameter then we can assign the value of that parameter inside our 
+ param decorator.
+ for eg:
+ @Get(':id/:name/:gender')
+ getUsersById(@Param('id') param:any){
+
+ }
+ So here we are just Reading the value of just one parameter even if we have passed multiple parameters.
+ But if we want to read the value of all parameters then we don't need to assign any value to param decorators.
+
+ __NOTE__ All Our Optional Parameters will come in the End 
