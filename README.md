@@ -486,4 +486,43 @@ So this will convert our id from string to number.
     console.log(limit,page)
   return  this.usersService.getAllUsers();
  }" 
- Here we have set the limit 10 and 1 on query string when someone tries to get users but has not specified any limit or page
+ Here we have set the limit 10 and 1 on query string when someone tries to get users but has not specified any limit or page.
+
+ ## DTO 
+DTO known as data transfer object is a simple class that is used to represent data that is being transferred 
+between different layers of an application suych as the controllers service and repository.
+
+so to create a dto for our user we need to create a files create-user.dto.ts
+and inside that we define out DTO class and we are using a npm package to validate the data that we are going to receive for this class and we can specify the type of data using the class validator 
+so here we are specifying @IsString() for our name and gender and for email we can specify as @IsEmail
+
+import { IsString } from "class-validator"
+export class CreateUserDto{
+    id:number,
+
+    @IsString()
+    IsNotEmpty()
+    name:string,
+    @IsString()
+    @IsOptional()
+    gender:string,
+    @IsEmail() 
+    email:string,
+    isMarried:boolean
+}
+
+And also we want to make our gender as optional value so if a user does not want to specify a gender he can omit that property. so to do this we can use the @IsOptional() validator which we import from class-validator
+And we also don't want our name property to be empty as if someone keeps the string as empty it will considered
+valid so to not keep it empty we specify one more validator IsNotEmpty() on our string.
+
+We can also set various other validator decorators on our DTO that we can import from the Class Validator.
+
+To use our DTO in our controller we need to install 'class-transformer' package from npm 
+thenw we can import and specify the createUserDto() in our controller and we can use that 
+ in our parameter type annotation
+@Post()
+ createUser(@Body(new ValidationPipe()),user:CreateUserDto){
+    
+    //this.usersService.createUser(user);
+   ( return 'A new User has been Created :)'
+ }

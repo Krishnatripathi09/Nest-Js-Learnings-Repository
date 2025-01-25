@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe } from "@nestjs/common";
+import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body } from "@nestjs/common";
 import { UsersService } from "./users.service";
+import { CreateUserDto } from "./DTO/create-user.dto";
 
 /* eslint-disable prettier/prettier */
 @Controller('users')
@@ -25,11 +26,10 @@ constructor(){
 
 
  @Post()
- createUser(){
-    const user ={id:3,name:'merry',age:23,gender:'female',isMarried:false};
-   
-    this.usersService.createUser(user);
-    return 'A new User is Created :)'
+ createUser(@Body(new ValidationPipe()) user:CreateUserDto){
+    
+    //this.usersService.createUser(user);
+    return 'A new User with id '+user.id+' is  Created :)'
  }
 
 }
