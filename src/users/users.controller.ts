@@ -9,9 +9,9 @@ import { UpdateUserDto } from "./DTO/update-user.dto";
 @Controller('users')
 
 export class UsersController{
-usersService:UsersService;
-constructor(){
-    this.usersService=new UsersService;
+
+constructor(private readonly usersService:UsersService){
+   
 }
     @Get(':isMarried?')
  getUsers(@Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit:number, 

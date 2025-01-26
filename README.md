@@ -613,3 +613,51 @@ For example, the create variant may require all fields, while the update variant
 Refer to (https://docs.nestjs.com/openapi/mapped-types)
 
 Mapped Types let's us inherit a specific DTO and import only partially some-parts of The DTO.
+
+
+# Dependency Injection:
+Dependency Injection is a design Pattern that involves passing dependencies(Objects or services) into an
+Object rather than the Object creating them itself:
+It is a design pattern used to achieve loose coupling between classes and their dependencies. In NestJS, we use DI to provide instances of services to controllers or other classes via the constructor, rather than manually instantiating them.
+
+When you directly create an instance of a service class inside a controller, it leads to tight coupling, which means:
+
+The controller is dependent on the specific implementation of the service.
+It becomes difficult to replace or mock the service for testing or future modifications.
+By using DI, the framework takes responsibility for creating and managing the service instances, allowing you to:
+
+Easily swap out dependencies (e.g., replace a service with a mock during testing).
+Follow the Inversion of Control (IoC) principle, where the framework controls the lifecycle of dependencies.
+
+The constructor injection in NestJS, where the service is injected via the constructor, is part of the DI mechanism itself and is considered a good practice. The tight coupling issue arises only when you manually instantiate the service in the controller using new, like this:
+
+// Bad practice
+export class UserController {
+  private readonly userService = new UserService(); // Tight coupling
+}
+
+Instead, NestJS uses DI with decorators like @Injectable() and injects the dependency into the constructor:
+
+// Good practice
+export class UserController {
+  constructor(private readonly userService: UserService) {} // Dependency Injection
+}
+
+To make any class injectable we have to decorate it with __@Injectable__ decorator.
+
+We also need to provide our Users-service in our users module so that it can be injected by Nest-JS in any other 
+classes.
+Next we Use the constructor of your controller to inject the service in our controller file.
+
+export class UsersController{
+
+constructor(private readonly usersService:UsersService){
+   
+}
+}
+
+Here we have injected our usersService in userController.
+
+The constructor(private readonly usersService: UsersService) syntax is how NestJS injects the service into the controller. The private readonly ensures:
+The service is only accessible within the class.
+The reference to the service cannot be modified (readonly).

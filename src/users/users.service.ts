@@ -1,4 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { Injectable } from "@nestjs/common"
+
+/* eslint-disable prettier/prettier */
+@Injectable()
 export class UsersService{
      users: {id:number,name:string,email:string,gender:string, isMarried:boolean}[]=[
         {id:1,name:'john', email:'dto@gmail.com', gender: 'male' ,isMarried:false},
