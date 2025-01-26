@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body, ParseBoolPipe } from "@nestjs/common";
+import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body, ParseBoolPipe, Patch } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./DTO/create-user.dto";
 import { GetUserParamDto } from "./DTO/get-user-param.dto";
+import { UpdateUserDto } from "./DTO/update-user.dto";
 
 /* eslint-disable prettier/prettier */
 @Controller('users')
@@ -37,5 +38,11 @@ constructor(){
     //this.usersService.createUser(user);
     return 'A new User with id '+user.id+' is  Created :)'
  }
+
+ @Patch()
+updateUser(@Body() user:UpdateUserDto){
+console.log(user)
+return "User Update k dehni!"
+}
 
 }

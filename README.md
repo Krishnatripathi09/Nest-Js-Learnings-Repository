@@ -604,3 +604,12 @@ and then we can import and use this DTO in our Get Method,
  @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number,
 @Param() param:GetUserParamDto
 )
+
+# PATCH(Update-User-Dto) (Mapped Types)
+When building input validation types (also called DTOs), it's often useful to build create and update variations on the same type. 
+So to update our user data using a PATCH http method we are going to use Mapped Types feature from Nest-Js
+For example, the create variant may require all fields, while the update variant may make all fields optional.
+
+Refer to (https://docs.nestjs.com/openapi/mapped-types)
+
+Mapped Types let's us inherit a specific DTO and import only partially some-parts of The DTO.
