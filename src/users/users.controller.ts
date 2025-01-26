@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body, ParseBoolPipe, Patch } from "@nestjs/common";
+import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe, Body,  Patch } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./DTO/create-user.dto";
 import { GetUserParamDto } from "./DTO/get-user-param.dto";

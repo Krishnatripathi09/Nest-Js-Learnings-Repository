@@ -697,3 +697,5 @@ USER-CONTROLLER                      AUTH-CONTROLLER
 
 Circular dependency is not good but we might need it in our program.
 For eg: If Service A needs Service B, and Service B also needs Service A, NestJS may not know which one to instantiate first.
+
+Providers are those classes which are decorated with @Injectable Decorator
