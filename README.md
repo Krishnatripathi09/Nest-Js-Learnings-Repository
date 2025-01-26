@@ -661,3 +661,39 @@ Here we have injected our usersService in userController.
 The constructor(private readonly usersService: UsersService) syntax is how NestJS injects the service into the controller. The private readonly ensures:
 The service is only accessible within the class.
 The reference to the service cannot be modified (readonly).
+
+## Types Of Dependency in Nest-Js
+In Nest-Js we have 3 types of dependencies
+- Intra-Modular dependency
+- Inter-Modular dependency
+- Circular Dependency
+
+***Intra-Modular*** - An Intra Modular Dependency refers to a dependency between components(controllers,services,providers) within the same module in Nest-Js.
+for eg: We have USER-MODULE 
+                  |
+            USER-CONTROLLER
+                  |
+             USER-SERVICE 
+
+***Inter-Modular*** - An Inter-modular dependency occurs when a component in one module depends on a component
+in another module.
+For eg: If we have 2 separate modules like USER MODULE and Tweet-MODULE here Tweet-SERVICE might have depdency on UserService
+
+USER-MODULE                          Tweet-MODULE
+     |                                   |
+ USER-SERVICE      <--------->       Tweet-SERVICE
+     |                                   |
+USER-CONTROLLER                      Tweet-CONTROLLER
+
+
+***Circular-Dependency*** - A circular Dependency arises when 2 or more modules or components have a direct or 
+indirect dependency on each other forming a cycle.
+
+USER-MODULE                          AUTH-MODULE
+     |                                   |
+ USER-SERVICE      <--------->       AUTH-SERVICE
+     |                                   |
+USER-CONTROLLER                      AUTH-CONTROLLER
+
+Circular dependency is not good but we might need it in our program.
+For eg: If Service A needs Service B, and Service B also needs Service A, NestJS may not know which one to instantiate first.
