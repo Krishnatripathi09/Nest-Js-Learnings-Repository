@@ -575,4 +575,32 @@ async function bootstrap() {
 }
 bootstrap();
 
-so using this the request data is being validated and also being transformed instance of createUserDto()
+so using this the request data is being validated and also being transformed into instance of createUserDto().
+
+# Usign DTO with Route Parameter:
+
+When we define a Route parameter in our http methods we cannot set it to optionl when using a validation pipe
+so to set our Route Parameter as optional we need to create a DTO.
+for eg:@Get(':isMarried?')
+ getUsers(@Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit:number, 
+ @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number,
+@Param('isMarried',ParseBoolPipe) isMarried:boolean
+ )
+
+Here we cannot set our Route parameter optional when we use a validation pipe so we can create a DTO
+get-user-param.dto and inside that we can define and keep our isMarried  property as null
+
+export class GetUserParamDto{
+ @IsBoolean()
+ @IsOptional()
+ @Type()
+    isMarried :boolean
+} In out DTO we have to convert our isMarried values from string to Boolean That's why we need to specify the @Type decorator for our isMarried field.S
+
+and then we can import and use this DTO in our Get Method,
+
+   @Get(':isMarried?')
+ getUsers(@Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit:number, 
+ @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number,
+@Param() param:GetUserParamDto
+)

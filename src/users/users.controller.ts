@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body } from "@nestjs/common";
+import { Controller,Get,Param,Post, Query,ParseIntPipe,DefaultValuePipe,ValidationPipe, Body, ParseBoolPipe } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./DTO/create-user.dto";
+import { GetUserParamDto } from "./DTO/get-user-param.dto";
 
 /* eslint-disable prettier/prettier */
 @Controller('users')
@@ -11,11 +12,16 @@ usersService:UsersService;
 constructor(){
     this.usersService=new UsersService;
 }
-    @Get()
+    @Get(':isMarried?')
  getUsers(@Query('limit',new DefaultValuePipe(10),ParseIntPipe) limit:number, 
- @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number){
+ @Query('page',new DefaultValuePipe(1),ParseIntPipe) page:number,
+@Param() param:GetUserParamDto
 
-    console.log(limit,page)
+)
+ 
+ {
+  console.log(param)
+  
   return  this.usersService.getAllUsers();
  }
 
