@@ -698,4 +698,147 @@ USER-CONTROLLER                      AUTH-CONTROLLER
 Circular dependency is not good but we might need it in our program.
 For eg: If Service A needs Service B, and Service B also needs Service A, NestJS may not know which one to instantiate first.
 
-Providers are those classes which are decorated with @Injectable Decorator
+Providers are those classes which are decorated with @Injectable Decorator 
+When using cicular dependency we have to use forwardRef(()) "  imports: [
+    forwardRef(() => AuthModule), // Use forwardRef here
+  ]," in the module where we are using the circular dependency.
+
+# DataBase ---->
+Initially we have created user Registeration in our App but we are not storing the user credentials in database so whenever we re-start our App that user data will be lost and we need to create a user again everyrtime.
+So to avoid this issue we will create Database for eg: Using MongoDB,postgres or oracle.
+And to connect to our Database we will use an ORM (Object Relation mapper) 
+We can use Any ORM to connect and Manage our Databse:
+- TypeORM
+- PrismaORM
+- MikroRM
+- Mongoose
+- Sequelize
+
+# What is an ORM:
+An Object-Relational Mapping (ORM) system is a programming technique for converting data between incompatible types, With ORM,we do-not need to write long sql queries by our OWN. It will be taken care by ORM,and it will generate 
+corresponding sql queries behind the scenes.
+- Without ORM 
+  INSERT INTO users (name, email, age) VALUES ('John Doe', 'john@example.com', 30);
+- With ORM
+  const user = new User();
+user.name = 'John Doe';
+user.email = 'john@example.com';
+user.age = 30;
+await userRepository.save(user);
+
+- With ORM we can also define the relationship between two tables in database,from typescript code itself.ORM
+will take care of doing the migrations and syncing the databases state with application.
+
+- With ORM we can create indexes on a table columns from the 
+- typescript code itself. we do not need to do it in the databse. 
+- In this way entire state of the databse, resides in the application with the help of ORM.
+  
+- With ORM, switching between the databases is very easy. when we switch from one daatabse to 
+ another database we do-not need to re-write the application logic again 
+ to suit the requirements of new databse.
+
+## Using TypeORM in Our Nest-Js Project
+To use TypeORM in our app first we need to install typeorm and we also need a package @nestjs/typeorm to work with
+TypeORM in NestJs. We can install it using the following command: __npm install typeorm @nestjs/typeorm__
+We also need to install the driver for our database. For eg: If we are using postgresql then we need to install
+pg driver. __npm install typeorm @nestjs/typeorm pg__
+
+## Importing and Using TypeORM
+After installing and importing the type ORM in our root module that is (App module of our Project)
+We need to import it and use it.
+Here we have imported TypeOrmModule from nestjs.
+
+TypeOrmModule.forRoot() is a method provided by the @nestjs/typeorm package. It is used to configure and initialize the TypeORM module globally in your application. 
+This setup connects your application to the database and sets up the necessary configurations for
+TypeORM to function.
+
+import {TypeOrmModule} from '@nestjs/typeorm';
+@Module({
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRoot({
+    type:'postgres',
+    host:'localhost',
+    entities:[],
+    synchronize:true
+  })],
+})
+
+__Explanation for TypeOrmModule.forRoot():__
+Database Configuration:
+It accepts an object with configuration details like the database type, host, port, username, password, database name, and other settings required to establish a connection with the database.
+For Eg: In our app we using below configuration from TYPEORM to connect to our database
+imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRoot({
+    type:'postgres',
+    host:'localhost',
+    entities:[],
+    synchronize:true
+  })],
+
+## Connecting to DataBase: 
+To connect to postgres DataBase using TypeORM we need to create a Database in our pg admin
+after that we need to specify below configuration as discussed above in root module that is App Module of our 
+Project.
+
+@Module({
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRoot({
+     type: 'postgres',          // Database type (PostgreSQL in this case)
+    host: 'localhost',         // Database host
+    port: 5432,                // Database port
+    username: 'postgres',      // Database username
+    password: '12345',         // Database password
+    database: 'nestjs',        // Database name
+    entities: [],              // Array of entity classes
+    synchronize: true,         // Auto-create tables based on entities (not recommended in production)
+  })],})
+
+  Here we have specified various configurations including the username and password for our database once we specify these and start our application we will automatically connect to database.
+
+  # Synchronous Connection
+  For connecting to database we have used asynchronous connection.
+  A Synchronous connection establishes a direct, immediate link between your application and the database.
+But when our code requests data from database, the execution halts until the database responds.
+for eg: when a request is made to database to fetch users from databse the execution of all other 
+code is halted till the database responds.
+So suppose if we are fetching the data and it takes 5 seconds or 10 seconds to fetch the data so here all the application will not respond until the data is fetched. 
+This blocking behaviour can impact application performance especially with time-consuming queries.
+
+So to Avoid this issue when we are building large Applications where Database will be large we should go with the Asynchronous connection.
+
+## Asynchronous Connection:
+Asynchronous connection establishes a connection with the database but does not block the execution of the code.
+It uses promises Or async/await to handle the database operations.
+It continues execution of other tasks while waiting  for database query to return data.
+This Improves application responsiveness and prevents blocking.
+
+
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRoot({
+    type:'postgres',
+    host:'localhost',
+    entities:[],
+    synchronize:true,
+    port:5432,
+    username:'postgres',
+    password:'12345',
+    database:'nestjs'
+  })],
+
+  So here to connect to our Database Instead of using TypeOrmModule.forRoot() we are going to use 
+  TypeOrmModule.forRootAsync() and we also do not need to specify database configuration (connection) options
+  directly .
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRootAsync({
+   useFactory:()=>({
+    
+    type:'postgres',
+    host:'localhost',
+    entities:[],
+    synchronize:true,
+    port:5432,
+    username:'postgres',
+    password:'12345',
+    database:'nestjs'
+
+   })
+  })],
+
+  So instead of specifying connection options directly we have to use useFactory Function.
+  useFactory function allows us to programmatically define the configuration object for the TypeOrmModule at runtime.
+By using forRootAsync with useFactory, you are preparing your application for dynamic and production-grade configurations.
