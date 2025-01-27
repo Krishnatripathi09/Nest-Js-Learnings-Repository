@@ -938,3 +938,17 @@ for eg:  @Column({
     })
     firstName :string; 
 Here we have specified different options on our firstName field like type, length etc.
+
+## Creating a User Repository:
+To create a Repository for Users We are going to use our User Entity.
+For-eg:
+constructor(
+    private userRepository: Repository<User>
+){} // here we have created a userRepository using our user.entity.ts file {<User>} After creating a userRepository like this we have to inject it into user.service we will use __@InjectRepository()__ decorator 
+in our Service file after creating it. and then we have to also specify the entity which we will inject into it
+For-eg: __@InjectRepository(User)__
+
+After creating the User Repository in our service file we also need to inform our user module about the entity without that we cannot use it in our Service.
+
+After Importing we have successfully injected User Repository into User Service. Now we can use this repository 
+to create a new user in Our DataBase

@@ -8,12 +8,8 @@ constructor(@Inject(forwardRef(()=>UsersService)) private readonly userService:U
 
 isAuthenticated:boolean = false;
 
-login(email:string,password:string){
-    const user = this.userService.users.find(u=>u.email ===email && u.password===password)
-if(user){
-    this.isAuthenticated = true;
-    return 'MY_TOKEN';
-}
+login(){
+    
 return 'User Not Found:'
 }
 }
