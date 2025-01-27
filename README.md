@@ -929,3 +929,12 @@ In order to make typeORM and Nest js aware about our entity file we have to spec
 
 Once we import and specify our entity in app.module.ts and refresh the application it will automatically create 
 the tables and columns in our database as we have used ( synchronize:true) in our app.module.ts 
+
+We can also specify column oprtions on our entities __(https://typeorm.io/entities#column-options)__
+for eg:  @Column({
+        type: 'varchar',
+        nullable:false,
+        length:100
+    })
+    firstName :string; 
+Here we have specified different options on our firstName field like type, length etc.
