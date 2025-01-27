@@ -842,3 +842,90 @@ This Improves application responsiveness and prevents blocking.
   So instead of specifying connection options directly we have to use useFactory Function.
   useFactory function allows us to programmatically define the configuration object for the TypeOrmModule at runtime.
 By using forRootAsync with useFactory, you are preparing your application for dynamic and production-grade configurations.
+
+## Entity
+An Entity is a class which defines which columns we need in a table in Our DataBase.
+For eg: When we create a User Entity(class) then we specify the properties for that class Now the
+TypeORM will automatically create a table in our database with the same properties as our Class(Entity).
+
+So this entity files will be used to create Tables in our Database.
+
+## Repository Pattern (Design Pattern)
+Repository pattern is a design pattern that acts as an intermediate between your business logic & the ORM.
+It Provides an abstraction layer for accessing and manipulating data in the database.
+
+So once we have created the entity file we will need a Repository file and that we can create using Repository file and then we can inject it into a service.(Respository is not a physical file so we do not need to create file in our project) The creation of repository is taken care by typeORM and it will also inject our repository into Service File.
+
+# Creating the user.entity.ts file 
+Here we have created a user entity file in our users folder and it should be in sync with our create-user-dto file as we need to use same columns in our entity files as we are using in our create-use.dto.ts file to create 
+a user and we also need to import and decorate our user entity file with __@Entity()__ decorator.
+For eg:
+import { Entity } from "typeorm";
+
+@Entity()
+export class User{
+    firstName :string;
+    lastName:string;
+    gender:string;
+    email:string;
+    password:string;
+}
+
+and we also need to decorate each field with @Column() decorator  that we have defined in our Entity.
+
+@Entity()
+export class User{
+    @Column()
+    firstName :string;
+    @Column()
+    lastName:string;
+    @Column()
+    gender:string;
+    @Column()
+    email:string;
+    @Column()
+    password:string;
+}
+
+Here we will have one more column id to separate each field as unique but as we do not have any id column in our 
+DTO we can generate this column uniquely by decorating it with 
+@PrimaryGeneratedColumn() decorator.
+
+@Entity()
+export class User{
+      @PrimaryGeneratedColumn()
+    id:number
+    @Column()
+    firstName :string;
+    @Column()
+    lastName:string;
+    @Column()
+    gender:string;
+    @Column()
+    email:string;
+    @Column()
+    password:string;
+}
+
+In order to make typeORM and Nest js aware about our entity file we have to specify our file in the entities array of our app.module.ts file 
+
+@Module({
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRootAsync({
+    imports:[],
+    inject:[],
+    useFactory:()=>({
+      type:'postgres',
+    host:'localhost',
+    entities:[User], __We have to specify our entity file here__ (as we have our entity named User we import it )
+    synchronize:true,
+    port:5432,
+    username:'postgres',
+    password:'12345',
+    database:'nestjs'
+    })
+  })],
+
+})
+
+Once we import and specify our entity in app.module.ts and refresh the application it will automatically create 
+the tables and columns in our database as we have used ( synchronize:true) in our app.module.ts 

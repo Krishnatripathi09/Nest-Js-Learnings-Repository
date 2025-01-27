@@ -4,6 +4,7 @@ import { UsersModule } from './users/users.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { TweetModule } from './tweet/tweet.module';
+import { User } from './users/user.entity';
 @Module({
   imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRootAsync({
     imports:[],
@@ -11,7 +12,7 @@ import { TweetModule } from './tweet/tweet.module';
     useFactory:()=>({
       type:'postgres',
     host:'localhost',
-    entities:[],
+    entities:[User],
     synchronize:true,
     port:5432,
     username:'postgres',
