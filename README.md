@@ -951,4 +951,14 @@ For-eg: __@InjectRepository(User)__
 After creating the User Repository in our service file we also need to inform our user module about the entity without that we cannot use it in our Service.
 
 After Importing we have successfully injected User Repository into User Service. Now we can use this repository 
-to create a new user in Our DataBase
+to create a new user in Our DataBase.
+
+# Using Date column Options
+Now we have created one more resource in our app #Profile and for the profile we will also create a profile entity file in which we will have firstName,lastName and Gender of the user and we will remove these fields from 
+our User Entity file as we have created a new entity for it. Instead in User Entity we will have email,password and three new Date fields "@CreateDateColumn()
+    createdAt:Date;
+    @UpdateDateColumn()
+    updatedAt:Date;
+    
+    @DeleteDateColumn()
+    deletedAt:Date;" 
