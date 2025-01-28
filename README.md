@@ -962,3 +962,56 @@ our User Entity file as we have created a new entity for it. Instead in User Ent
     
     @DeleteDateColumn()
     deletedAt:Date;" 
+
+# Auto Loading Entities in app.module.ts
+When we create an entity file for any resource (User or Profil)e instead of manually importing the entity in 
+app.module.ts file everytime.
+
+@Module({
+  imports: [ UsersModule, AuthModule, TweetModule,TypeOrmModule.forRootAsync({
+    imports:[],
+    inject:[],
+    useFactory:()=>({
+      type:'postgres',
+    host:'localhost',
+   // entities:[User,profile],
+   ##  autoLoadEntities:true,//We can set "autoLoadEntities:true" to true and it automatically load entities in DB
+    synchronize:true,
+    port:5432,
+    username:'postgres',
+    password:'12345',
+    database:'nestjs'
+    })
+  }), ProfileModule],
+
+})
+
+And also after creating the entity file we have to import it in our module using TypeOrmModule
+"  controllers: [ProfileController],
+  providers: [ProfileService],
+  - imports:[TypeOrmModule.forFeature([profile])]"
+
+## Table Relations 
+In a relational database like postgresql,MySql,Oracle etc. we store realted data in different tables and create 
+a relation between them using primary-key foreign-key reference.
+
+Types of relations :
+- One to One --> A One to One relation signifies that one row in one table will have a single related row in second table.
+
+- One to Many --> A One to Many relationShip signifies that one row in one table will have a multiple related rows in second table. The opposite of One to Many is Many to One.
+
+- Many to Many --> A many to many relationship signifies that multiple rows in first table has multiple related 
+rows in second table. And multiple rows in second table has multiple related rows in first table.
+
+
+# Advantage of Table Relations:
+Accurate data:
+Flexibitlity:
+
+# Creaating a One to Relationship between User and Profile Table 
+when we need to create a One to One relationship between user And Profile table we have to specify 
+the primary key of profile table in User Table as foreign key using @OneToOne decoratorand we also need to 
+join these to columns so we use @JoinColumn( ) decorator
+@OneToOne(()=>profile)
+      @JoinColumn()
+      profile?:profile;

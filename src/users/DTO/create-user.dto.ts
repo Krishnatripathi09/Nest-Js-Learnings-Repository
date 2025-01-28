@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { IsEmail, IsNotEmpty,   IsString, MaxLength, MinLength } from "class-validator"
+import { IsEmail, IsNotEmpty,   IsOptional,   IsString, MaxLength, MinLength } from "class-validator"
+import { CreateProfileDto } from "src/profile/DTO/create-profile.dto";
 
 /* eslint-disable prettier/prettier */
 export class CreateUserDto{
@@ -22,5 +23,6 @@ export class CreateUserDto{
     @MaxLength(100)
     password:string
    
-  
+    @IsOptional()
+  profile: CreateProfileDto | null;
 }
