@@ -31,9 +31,8 @@ export class User{
     })
     password:string;
 
-      @OneToOne(()=>profile, {
-   cascade:['insert'],
-   eager:true
+      @OneToOne(()=>profile,(profile)=>profile.user, {
+   cascade:['insert']
       })
       @JoinColumn()
       profile?:profile;
