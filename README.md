@@ -1046,7 +1046,18 @@ So to do this In our user Service We have find(getAllUsers) method where we are 
 getAllUsers(){
    return this.userRepository.find(({
     // __Here we can specify the relations property inside which we specify property name__
+
+     relations:{
+        profile:true,
+    }
    }))
 } 
+
+The Another way to set Eager loading is to in user.entity.ts
+so there in our @OneToOne() relationship decorator we can also specify one more field eager to true;
+   @OneToOne(()=>profile, {
+   cascade:['insert'],
+   eager:true,// setting eager to true here will enable eager loading
+      })
 
 
