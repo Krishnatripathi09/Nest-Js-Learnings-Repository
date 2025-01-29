@@ -11,7 +11,7 @@ export class UsersController{
 constructor(private readonly usersService:UsersService){
    
 }
-    @Get(':isMarried?')
+    @Get()
  getUsers()
  {
 return this.usersService.getAllUsers()

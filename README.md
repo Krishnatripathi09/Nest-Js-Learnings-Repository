@@ -1008,10 +1008,45 @@ rows in second table. And multiple rows in second table has multiple related row
 Accurate data:
 Flexibitlity:
 
-# Creaating a One to Relationship between User and Profile Table 
+# Creating a One to Relationship between User and Profile Table 
 when we need to create a One to One relationship between user And Profile table we have to specify 
 the primary key of profile table in User Table as foreign key using @OneToOne decoratorand we also need to 
 join these to columns so we use @JoinColumn( ) decorator
 @OneToOne(()=>profile)
       @JoinColumn()
       profile?:profile;
+
+
+# Cascading --
+Cascading is a feature of TypeORM that allows you to automatically delete or update related entities when
+you perform those operations on Parent entity.
+
+we can cascade any operations by specifying themm in our user.entity.ts file
+one to one realtionship
+
+  @OneToOne(()=>profile, {
+   cascade:true,
+      })
+
+when we set cascade to true it will cascade the all the operations that we have in cascade method but if we want to specify only specific operations to specify we can specify those operations in an array and pass it to
+cascade method like this:
+@OneToOne(()=>profile, {
+  cascade:['insert','update','recover','remove','soft-remove'],
+  })
+
+
+
+
+# Egaer Loading
+Eager Loading in TypeORM means that when you fetch an entity from the Database,its realted entities (defined in relationships such as @OneToMany,@ManyToOne,@ManyToMany etc.) are automatically loaded alongside it - without
+you having to explicitly specify it in our query.
+
+So to do this In our user Service We have find(getAllUsers) method where we are fetching all users from database. In that method we can pass a object inside which we can specify relations property and inside which we specify property name on which we have created the profile. 
+
+getAllUsers(){
+   return this.userRepository.find(({
+    // __Here we can specify the relations property inside which we specify property name__
+   }))
+} 
+
+
