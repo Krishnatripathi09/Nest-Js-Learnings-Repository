@@ -42,4 +42,19 @@ let user = this.userRepository.create(userDto)
 return await this.userRepository.save(user)
 
 }
+
+public async deleteUser(id:number){
+
+    //Find the User with given Id
+    let user = await this.userRepository.findOneBy({id})
+
+await this.userRepository.delete(id)
+
+this.profileRepository.delete(user.profile.id)
+
+return {deleted:true}
+
+
+
+}
 }
