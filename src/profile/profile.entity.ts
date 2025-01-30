@@ -45,6 +45,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "ty
 profileImage:string;
 
 
-@OneToOne(()=>User,(user)=>user.profile)
+@OneToOne(()=>User,(user)=>user.profile,{onDelete:'CASCADE'})
+@JoinColumn()
 user:User;
  }

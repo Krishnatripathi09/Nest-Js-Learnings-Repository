@@ -34,7 +34,6 @@ export class User{
       @OneToOne(()=>profile,(profile)=>profile.user, {
    cascade:['insert']
       })
-      @JoinColumn()
       profile?:profile;
 
     @CreateDateColumn()

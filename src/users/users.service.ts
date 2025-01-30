@@ -45,13 +45,11 @@ return await this.userRepository.save(user)
 
 public async deleteUser(id:number){
 
-    //Find the User with given Id
-    let user = await this.userRepository.findOneBy({id})
-
+   
+//Delete the user
 await this.userRepository.delete(id)
 
-this.profileRepository.delete(user.profile.id)
-
+// Send A Response
 return {deleted:true}
 
 
